@@ -245,7 +245,7 @@ func (gi *GeoRasterGRPC) Run(varList []string, verbose bool) {
 						rawHeight = g.RawHeight
 						rawWidth = g.RawWidth
 					}
-					outRasters[idx] = &FlexRaster{ConfigPayLoad: g.ConfigPayLoad, Data: r.Raster.Data, Height: rawHeight, Width: rawWidth, DataHeight: rHeight, DataWidth: rWidth, OffX: rOffX, OffY: rOffY, Type: r.Raster.RasterType, NoData: r.Raster.NoData, NameSpace: g.NameSpace, TimeStamp: g.TimeStamp, Polygon: g.Polygon}
+					outRasters[idx] = &FlexRaster{ConfigPayLoad: g.ConfigPayLoad, Data: r.Raster.Data, Height: rawHeight, Width: rawWidth, DataHeight: rHeight, DataWidth: rWidth, OffX: rOffX, OffY: rOffY, Type: r.Raster.RasterType, NoData: r.Raster.NoData, NameSpace: g.NameSpace, TimeStamp: g.TimeStamp, Polygon: g.Polygon, GeomMask: r.Raster.Mask}
 				}(gran, iGran)
 			}
 			iGran++
@@ -284,8 +284,10 @@ func (gi *GeoRasterGRPC) Run(varList []string, verbose bool) {
 
 	for _, v := range varList {
 		if _, found := availNamespaces[v]; !found {
-			gi.sendError(fmt.Errorf("band '%v' not found", v))
-			return
+			if _, ok := availNamespaces[wmsGeomMaskKey]; !ok {
+				gi.sendError(fmt.Errorf("band '%v' not found", v))
+				return
+			}
 		}
 	}
 
