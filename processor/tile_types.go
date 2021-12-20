@@ -62,17 +62,17 @@ type GeoTileAxis struct {
 
 type GeoTileRequest struct {
 	ConfigPayLoad
-	Collection     string
-	CRS            string
-	BBox           []float64
-	OrigBBox       []float64
-	Height, Width  int
-	OffX, OffY     int
-	StartTime      *time.Time
-	EndTime        *time.Time
-	Axes           map[string]*GeoTileAxis
-	Overview       *utils.Layer
-	GeoTileRequest *geo.Feature
+	Collection    string
+	CRS           string
+	BBox          []float64
+	OrigBBox      []float64
+	Height, Width int
+	OffX, OffY    int
+	StartTime     *time.Time
+	EndTime       *time.Time
+	Axes          map[string]*GeoTileAxis
+	Overview      *utils.Layer
+	ClipFeature   *geo.Feature
 }
 
 type GeoTileGranule struct {
