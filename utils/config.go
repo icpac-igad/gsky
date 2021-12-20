@@ -21,7 +21,7 @@ import (
 
 	goeval "github.com/edisonguo/govaluate"
 	"github.com/edisonguo/jet"
-	pb "github.com/icpac-igad/gsky-wps-contrib/worker/gdalservice"
+	pb "github.com/nci/gsky/worker/gdalservice"
 	geo "github.com/nci/geometry"
 	geojson "github.com/paulmach/go.geojson"
 	"golang.org/x/net/context"
