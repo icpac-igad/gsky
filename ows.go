@@ -1734,7 +1734,7 @@ func owsHandler(w http.ResponseWriter, r *http.Request) {
 			Info.Printf("Invalid dataset namespace: %v for url: %v, err: %v\n", namespace, r.URL.Path, err)
 			http.Error(w, fmt.Sprintf("Invalid dataset namespace: %v\n", namespace), 404)
 		}
-		conf, err := utils.LoadConfigOnDemand(utils.EtcDir, namespace, *verbose)
+		conf, err := utils.LoadConfigOnDemand(utils.EtcDir, namespace, utils.WmsClipGeomsFile, *verbose)
 		if err != nil {
 			if *verbose {
 				log.Printf("LoadConfigOnDemaind error: %v", err)
