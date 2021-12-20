@@ -5,6 +5,7 @@ package processor
 import "C"
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"math"
@@ -343,7 +344,13 @@ func getDataSize(dataType string) (int, error) {
 
 func getRPCRaster(ctx context.Context, g *GeoTileGranule, projWKT string, geot []float64, conn *grpc.ClientConn) (*pb.Result, error) {
 	c := pb.NewGDALClient(conn)
-	granule := &pb.GeoRPCGranule{Operation: "warp", Height: float32(g.Height), Width: float32(g.Width), Path: g.Path, DstSRS: projWKT, DstGeot: geot, Bands: []int32{int32(g.BandIdx)}}
+
+	var feat []byte
+	if g.ClipFeature != nil {
+		feat, _ = json.Marshal(g.ClipFeature)
+	}
+
+	granule := &pb.GeoRPCGranule{Operation: "warp", Height: float32(g.Height), Width: float32(g.Width), Path: g.Path, DstSRS: projWKT, DstGeot: geot, Bands: []int32{int32(g.BandIdx)}, Geometry: string(feat)}
 	if g.GeoLocation != nil {
 		granule.GeoLocOpts = []string{
 			fmt.Sprintf("X_DATASET=%s", g.GeoLocation.XDSName),
